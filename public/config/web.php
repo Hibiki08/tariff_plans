@@ -43,14 +43,24 @@ $config = [
             ],
         ],
         'db' => $db,
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
+            'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
             ],
         ],
-        */
+        'response' => [
+            'class' => \yii\web\Response::class,
+            'format' => \yii\web\Response::FORMAT_JSON,
+            'formatters' => [
+                \yii\web\Response::FORMAT_JSON => [
+                    'class' => 'yii\web\JsonResponseFormatter',
+                    'prettyPrint' => YII_DEBUG,
+                    'contentType' => \yii\web\JsonResponseFormatter::CONTENT_TYPE_JSON,
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];
