@@ -6,7 +6,7 @@ $db = require __DIR__ . '/db.php';
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'eventSubscriber'],
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
@@ -36,9 +36,11 @@ $config = [
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
-                [
+                'info' => [
                     'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
+                    'levels' => ['info'],
+                    'categories' => ['app\models\Tariff'],
+                    'logFile' => '@app/runtime/logs/info.log',
                 ],
             ],
         ],
@@ -48,6 +50,7 @@ $config = [
             'enableStrictParsing' => true,
             'showScriptName' => false,
             'rules' => [
+                'POST <controller>/<action>' => '<controller>/<action>',
             ],
         ],
         'response' => [
@@ -60,6 +63,12 @@ $config = [
                     'contentType' => \yii\web\JsonResponseFormatter::CONTENT_TYPE_JSON,
                 ],
             ],
+        ],
+        'linkFormatter' => [
+            'class' => \app\components\LinkFormatter::class,
+        ],
+        'eventSubscriber' => [
+            'class' => \app\components\EventSubscriber::class,
         ],
     ],
     'params' => $params,
